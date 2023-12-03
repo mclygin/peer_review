@@ -4,7 +4,6 @@
 #include <string>
 #include <numeric>
 #include <utility>
-#include "log_duration.h"
 
 using namespace std;
 
