@@ -4,6 +4,7 @@
 #include <string>
 #include <numeric>
 #include <utility>
+#include "log_duration.h"
 
 using namespace std;
 
@@ -29,7 +30,7 @@ vector<string> ebook::ReadRequests(istream& input) {
 
 	string str;
 	getline(input, str);
-	for (int i = 0; i < count_requests; ++i) {
+	while(count_requests--) {
 		getline(input, str);
 		requests.push_back(move(str));
 	}
@@ -40,13 +41,13 @@ void ebook::ProcessRequests(const vector<string>& requests, ostream& out) {
 
 	EbookStats stats;
 
-	for (int i = 0; i < requests.size(); ++i) {
-		if (requests[i][0] == 'C') {
-			Cheer(stoi(requests[i].substr(requests[i].find_first_of(' ') + 1)), stats, out);
+	for (const auto& request : requests) {
+		if (request[0] == 'C') {
+			Cheer(stoi(request.substr(request.find_first_of(' ') + 1)), stats, out);
 		}
 		else {
-			int reader_id = stoi(requests[i].substr(requests[i].find_first_of(' ') + 1, requests[i].find_last_of(' ')));
-			int page = stoi(requests[i].substr(requests[i].find_last_of(' ')));
+			int reader_id = stoi(request.substr(request.find_first_of(' ') + 1, request.find_last_of(' ')));
+			int page = stoi(request.substr(request.find_last_of(' ')));
 			Read(reader_id, page, stats);
 		}
 	}
